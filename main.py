@@ -1,6 +1,0 @@
-def main():
-    print("Hello from ai-backend-v2!")
-
-
-if __name__ == "__main__":
-    main()
