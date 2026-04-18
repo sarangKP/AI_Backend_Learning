@@ -15,3 +15,26 @@ class EchoRequest(BaseModel):
 
 class EchoResponse(BaseModel):
     echo: str
+
+
+class ChatRequest(BaseModel):
+    message: str
+
+
+class ChatResponse(BaseModel):
+    response: str
+
+
+class IngestRequest(BaseModel):
+    content: str
+    source: str = "unknown"
+
+
+class IngestResponse(BaseModel):
+    chunks_stored: int
+    source: str
+
+
+class SourceChunk(BaseModel):
+    content: str
+    source: str
