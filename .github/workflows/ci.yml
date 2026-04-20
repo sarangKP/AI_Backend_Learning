@@ -57,4 +57,5 @@ jobs:
           railway up \
             --service ${{ secrets.RAILWAY_SERVICE_ID }} \
             --project ${{ secrets.RAILWAY_PROJECT_ID }} \
+            --environment ${{ secrets.RAILWAY_ENVIRONMENT_ID }} \
             --detach
