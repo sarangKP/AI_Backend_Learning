@@ -1,4 +1,4 @@
-# rag_service/app/config.py
+# Updated rag_service/app/config.py
 
 from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     ollama_embedding_model: str = "nomic-embed-text"
 
     api_key: str = "change-me-before-deploying"
+
+    allowed_origins: list[str] = ["http://localhost:3000"]
+    rate_limit_per_minute: int = 10
 
 
 @lru_cache
