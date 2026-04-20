@@ -25,6 +25,7 @@ async def test_chat_streams_response(client):
         response = await client.post(
             "/api/v1/chat",
             json={"message": "Hello"},
+            headers={"X-Api-Key": "change-me-before-deploying"},
         )
 
     assert response.status_code == 200

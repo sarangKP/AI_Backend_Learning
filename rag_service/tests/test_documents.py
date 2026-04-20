@@ -18,6 +18,7 @@ async def test_ingest_document(client):
                 "content": "Test document content",
                 "source": "test-source",
             },
+            headers={"X-Api-Key": "change-me-before-deploying"},
         )
 
     assert response.status_code == 200
