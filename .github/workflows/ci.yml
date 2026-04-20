@@ -1,0 +1,60 @@
+# .github/workflows/ci.yml
+
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies
+        run: |
+          cd rag_service
+          uv pip install --system fastapi "uvicorn[standard]" httpx \
+            pydantic-settings "sqlalchemy[asyncio]" asyncpg \
+            python-multipart structlog slowapi \
+            prometheus-fastapi-instrumentator \
+            pytest pytest-asyncio anyio httpx
+
+      - name: Run tests
+        run: |
+          cd rag_service
+          pytest tests/ -v
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up \
+            --service ${{ secrets.RAILWAY_SERVICE_ID }} \
+            --project ${{ secrets.RAILWAY_PROJECT_ID }} \
+            --detach
